@@ -3,6 +3,10 @@ DOM = React.DOM
 FormInputWithLabel = React.createClass
   displayName: "FormInputWithLabel"
 
+  getDefaultProps: ->
+    elementType: "input"
+    inputType: "text"
+
   render: ->
     DOM.div
       className: "form-group"
@@ -12,16 +16,20 @@ FormInputWithLabel = React.createClass
         @props.labelText
       DOM.div
         className: "col-lg-10"
-        DOM.input
+        DOM[@props.elementType]
           className: "form-control"
           placeholder: @props.placeholder
           id: @props.id
-          type: "text"
+          type: @tagType()
           value: @props.value
           onChange: @props.onChange
+  tagType: ->
+    {
+      "input": @props.inputType,
+      "textarea": null
+    }[@props.elementType]
 
 formInputWithLabel = React.createFactory(FormInputWithLabel)
-
 
 CreateNewMeetupForm = React.createClass
   displayName: "CreateNewMeetupForm"
@@ -57,6 +65,7 @@ CreateNewMeetupForm = React.createClass
           onChange: @descriptionChanged
           placeholder: "Meetup description"
           labelText: "Description"
+          elementType: "textarea"
 
 createNewMeetupForm = React.createFactory(CreateNewMeetupForm)
 
